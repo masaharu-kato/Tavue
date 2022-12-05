@@ -1,0 +1,61 @@
+.tavue-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #CCCCCC;
+}
+
+.tavue-row {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 auto;
+  border-bottom: 1px solid #BBBBBB;
+}
+
+.tavue-cell {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 1px solid #E0E0E0;
+  padding: 0.1em 0.5em;
+}
+
+.tavue-table.resizing {
+  user-select: none;
+}
+
+.tavue-header-row {
+  background-color: #CCCCCC;
+}
+
+.tavue-row:hover {
+  background-color: #F8FFFF;
+}
+
+.tavue-table:not(.resizing) .tavue-cell.hover {
+  background-color: #F8FFFF;
+}
+
+.tavue-table:not(.resizing) .tavue-header-row .tavue-cell.hover {
+  background-color: #DDE8E8;
+}
+
+.tavue-table:not(.resizing) .tavue-cell:hover {
+  background-color: #F0FFFF;
+}
+
+.tavue-cell.border-left-hover {
+  box-shadow: inset 4px 0 2px -2px rgb(160, 192, 192, 0.5)
+}
+
+.tavue-cell.border-right-hover {
+  box-shadow: inset -4px 0 2px -2px rgb(160, 192, 192, 0.5)
+}
+
+.tavue-cell.border-left-moving {
+  box-shadow: inset 4px 0 2px -2px rgb(64, 192, 192, 0.7)
+}
+
+.tavue-cell.border-right-moving {
+  box-shadow: inset -4px 0 2px -2px rgb(64, 192, 192, 0.7)
+}
