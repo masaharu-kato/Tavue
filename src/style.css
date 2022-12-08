@@ -24,7 +24,7 @@
   user-select: none;
 }
 
-.tavue-header-row {
+.tavue-row-header {
   background-color: #CCCCCC;
 }
 
@@ -36,7 +36,7 @@
   background-color: #F8FFFF;
 }
 
-.tavue-table:not(.resizing) .tavue-header-row .tavue-cell.hover {
+.tavue-table:not(.resizing) .tavue-row-header .tavue-cell.hover {
   background-color: #DDE8E8;
 }
 

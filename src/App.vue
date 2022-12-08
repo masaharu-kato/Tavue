@@ -6,39 +6,54 @@ import _rows from './assets/sample.json';
 const rows = _rows.slice(0, 100);
 // const rows = _rows;
 
+function row_onclick(row: any, row_i: number) {
+  console.log(`Row#${row_i} clicked:`, row);
+}
+
 </script>
 
 <template>
+  <h1>Sample Data Table</h1>
   <Tavue :rows="rows">
-    <TavueColumn name="id">
-      <template #header>#</template>
-      <template #row="{ row }">{{ row.id }}</template>
-      <template #footer></template>
-    </TavueColumn>
-    <TavueColumn name="first_name">
-      <template #header>First Name</template>
-      <template #row="{ row }">{{ row.first_name }}</template>
-      <template #footer></template>
-    </TavueColumn>
-    <TavueColumn name="last_name">
-      <template #header>Last Name</template>
-      <template #row="{ row }">{{ row.last_name }}</template>
-      <template #footer></template>
-    </TavueColumn>
-    <TavueColumn name="email">
-      <template #header>E-Mail</template>
-      <template #row="{ row }">{{ row.email }}</template>
-      <template #footer></template>
-    </TavueColumn>
-    <TavueColumn name="gender">
-      <template #header>Gender</template>
-      <template #row="{ row }">{{ row.gender }}</template>
-      <template #footer></template>
-    </TavueColumn>
-    <TavueColumn name="ip_address">
-      <template #header>IP Address</template>
-      <template #row="{ row }">{{ row.ip_address }}</template>
-      <template #footer></template>
-    </TavueColumn>
+    <template #row_header>
+      <div></div>
+    </template>
+    <template #row="{row, row_i}">
+      <div @click="row_onclick(row, row_i)"></div>
+    </template>
+    <template #row_footer>
+      <div></div>
+    </template>
+    <template #columns>
+      <TavueColumn name="id">
+        <template #header>#</template>
+        <template #row="{row}">{{ row.id }}</template>
+        <template #footer></template>
+      </TavueColumn>
+      <TavueColumn name="name">
+        <template #header>Name</template>
+        <template #row="{row}">
+          <span class="first_name">{{ row.first_name }}</span>
+          <span class="name_space">&nbsp;</span>
+          <span class="last_name">{{ row.last_name }}</span>
+        </template>
+        <template #footer></template>
+      </TavueColumn>
+      <TavueColumn name="gender">
+        <template #header>Gender</template>
+        <template #row="{row}">{{ row.gender }}</template>
+        <template #footer></template>
+      </TavueColumn>
+      <TavueColumn name="email">
+        <template #header>E-Mail</template>
+        <template #row="{row}">{{ row.email }}</template>
+        <template #footer></template>
+      </TavueColumn>
+      <TavueColumn name="ip_address">
+        <template #header>IP Address</template>
+        <template #row="{row}">{{ row.ip_address }}</template>
+        <template #footer></template>
+      </TavueColumn>
+    </template>
   </Tavue>
 </template>

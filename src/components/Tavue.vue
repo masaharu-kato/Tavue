@@ -7,7 +7,10 @@ defineProps<{
 }>()
 
 const slots = useSlots()
-const columns = slots.default ? slots.default() : []
+const row_header = slots.row_header!()[0]
+const slot_row = slots.row!
+const row_footer = slots.row_footer!()[0]
+const columns = slots.columns!()
 
 const table_state = reactive({} as TableState)
 const col_states = reactive(columns.map(_ => ({} as ColumnState)));
@@ -39,29 +42,47 @@ function onMousemove(e: MouseEvent) {
   }
 }
 
+function _states(i: number) {
+  return {
+    index: i,
+    table_state: table_state,
+    state: col_states[i],
+    border_left: border_states[i],
+    border_right: border_states[i + 1],
+    ref_to: setCellsRef[i]
+  }
+}
+
 </script>
 <template>
+
+  <!-- Definition of Slots (for develpments only, not shown) -->
+  <slot v-if="null" name="row_header"></slot>
+  <slot v-if="null" name="row" :row="null" :row_i="0"></slot>
+  <slot v-if="null" name="row_footer"></slot>
+  <slot v-if="null" name="columns"></slot>
+
+
+  <!-- Actual elements -->
+
+  <!-- Tavue table -->
   <div class="tavue-table" :class="{ resizing: !!table_state.moving_border }" @mousemove="onMousemove">
-    <div class="tavue-row tavue-header-row">
-      <template v-for="(c, i) in columns">
-        <component :is="c"
-          v-bind="{ index: i, table_state: table_state, state: col_states[i], border_left: border_states[i], border_right: border_states[i + 1], is_header: true, ref_to: setCellsRef[i] }">
-        </component>
-      </template>
-    </div>
-    <div v-for="(row, row_i) in rows" class="tavue-row tavue-rows-row">
-      <template v-for="(c, i) in columns">
-        <component :is="c"
-          v-bind="{ index: i, table_state: table_state, state: col_states[i], border_left: border_states[i], border_right: border_states[i + 1], row_index: row_i, row: row, ref_to: setCellsRef[i] }">
-        </component>
-      </template>
-    </div>
-    <div class="tavue-row tavue-footer-row">
-      <template v-for="(c, i) in columns">
-        <component :is="c"
-          v-bind="{ index: i, table_state: table_state, state: col_states[i], border_left: border_states[i], border_right: border_states[i + 1], is_footer: true, ref_to: setCellsRef[i] }">
-        </component>
-      </template>
-    </div>
+
+    <!-- row header -->
+    <component :is="row_header" class="tavue-row tavue-row-header">
+      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :is_header="true" />
+    </component>
+
+    <!-- row data (for each row in rows data) -->
+    <component v-for="(row, row_i) in rows" :is="slot_row({row, row_i})[0]" class="tavue-row tavue-row-data">
+      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :row="row" :row_i="row_i" />
+    </component>
+
+    <!-- row footer -->
+    <component :is="row_footer" class="tavue-row tavue-row-footer">
+      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :is_footer="true" />
+    </component>
+
   </div>
+
 </template>
