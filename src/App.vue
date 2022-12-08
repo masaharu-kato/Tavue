@@ -15,15 +15,15 @@ function row_onclick(row: any, row_i: number) {
 <template>
   <h1>Sample Data Table</h1>
   <Tavue :rows="rows">
-    <template #row_header>
+    <!-- <template #row_header>
       <div></div>
-    </template>
+    </template> -->
     <template #row="{ row, row_i }">
       <div @dblclick="row_onclick(row, row_i)"></div>
     </template>
-    <template #row_footer>
+    <!-- <template #row_footer>
       <div></div>
-    </template>
+    </template> -->
     <template #columns>
       <TavueColumn name="id">
         <template #header>#</template>

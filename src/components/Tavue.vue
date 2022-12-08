@@ -9,10 +9,10 @@ defineProps<{
 const DETECT_WIDTH = 5;
 
 const slots = useSlots()
-const row_header = slots.row_header!()[0]
-const slot_row = slots.row!
-const row_footer = slots.row_footer!()[0]
-const columns = slots.columns!()
+const row_header = slots.row_header ? slots.row_header()[0] : 'div'
+const slot_row = slots.row
+const row_footer = slots.row_footer ? slots.row_footer()[0] : 'div'
+const columns = slots.columns ? slots.columns() : []
 
 const table_state = reactive({} as TableState)
 const col_states = reactive(columns.map(_ => ({} as ColumnState)));
@@ -149,7 +149,8 @@ function _states(i: number) {
     </component>
 
     <!-- row data (for each row in rows data) -->
-    <component v-for="(row, row_i) in rows" :is="slot_row({ row, row_i })[0]" class="tavue-row tavue-row-data">
+    <component v-for="(row, row_i) in rows" :is="slot_row ? slot_row({ row, row_i })[0] : 'div'"
+      class="tavue-row tavue-row-data">
       <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :row="row" :row_i="row_i" />
     </component>
 
