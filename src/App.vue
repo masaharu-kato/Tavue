@@ -18,8 +18,8 @@ function row_onclick(row: any, row_i: number) {
     <template #row_header>
       <div></div>
     </template>
-    <template #row="{row, row_i}">
-      <div @click="row_onclick(row, row_i)"></div>
+    <template #row="{ row, row_i }">
+      <div @dblclick="row_onclick(row, row_i)"></div>
     </template>
     <template #row_footer>
       <div></div>
@@ -27,12 +27,12 @@ function row_onclick(row: any, row_i: number) {
     <template #columns>
       <TavueColumn name="id">
         <template #header>#</template>
-        <template #row="{row}">{{ row.id }}</template>
+        <template #row="{ row }">{{ row.id }}</template>
         <template #footer></template>
       </TavueColumn>
       <TavueColumn name="name">
         <template #header>Name</template>
-        <template #row="{row}">
+        <template #row="{ row }">
           <span class="first_name">{{ row.first_name }}</span>
           <span class="name_space">&nbsp;</span>
           <span class="last_name">{{ row.last_name }}</span>
@@ -41,17 +41,17 @@ function row_onclick(row: any, row_i: number) {
       </TavueColumn>
       <TavueColumn name="gender">
         <template #header>Gender</template>
-        <template #row="{row}">{{ row.gender }}</template>
+        <template #row="{ row }">{{ row.gender }}</template>
         <template #footer></template>
       </TavueColumn>
       <TavueColumn name="email">
         <template #header>E-Mail</template>
-        <template #row="{row}">{{ row.email }}</template>
+        <template #row="{ row }">{{ row.email }}</template>
         <template #footer></template>
       </TavueColumn>
       <TavueColumn name="ip_address">
         <template #header>IP Address</template>
-        <template #row="{row}">{{ row.ip_address }}</template>
+        <template #row="{ row }">{{ row.ip_address }}</template>
         <template #footer></template>
       </TavueColumn>
     </template>

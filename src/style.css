@@ -13,6 +13,7 @@
 
 .tavue-cell {
   flex: 0 0 auto;
+  box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1,4 +1,6 @@
 export interface TableState {
+  hovering_col_i?: number
+  hovering_border?: number
   moving_border?: number
   moving_last_x?: number
 }
