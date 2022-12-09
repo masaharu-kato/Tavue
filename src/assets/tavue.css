@@ -1,0 +1,33 @@
+.tavue-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.tavue-row {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 auto;
+}
+
+.tavue-row.tavue-row-tree {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+
+.tavue-row-tree>.tavue-row-tree-children {
+  display: none;
+}
+
+.tavue-row-tree.tavue-row-tree-is-open>.tavue-row-tree-children {
+  display: flex;
+}
+
+.tavue-cell {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+.tavue-table.resizing {
+  user-select: none;
+}

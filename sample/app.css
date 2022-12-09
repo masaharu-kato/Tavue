@@ -1,0 +1,105 @@
+.tavue-row-tree.tavue-row-tree-is-open>.tavue-row-tree-parent {
+  background: #DDDDDD;
+}
+
+.tavue-row-tree>.tavue-row-tree-children {
+  margin-left: 8px;
+  border-left: 4px solid #888888;
+  margin-bottom: 4px;
+  /* border-bottom: 4px solid #DDDDDD; */
+}
+
+.tavue-row-tree.row-tree-A.tavue-row-tree-is-open>.tavue-row-tree-parent {
+  background: #BBCCDD;
+}
+
+.tavue-row-tree.row-tree-A>.tavue-row-tree-children {
+  border-left: 4px solid #446688;
+  /* border-bottom: 2px solid #446688; */
+}
+
+.tavue-row-tree.row-tree-A>.tavue-row-tree-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
+  background: #BBCCDD;
+  /* border-bottom: 2px solid #446688; */
+}
+
+.tavue-row-tree.row-tree-A .tree-btn {
+  background: #88AACC;
+  border: 1px solid #446688;
+}
+
+.tavue-row-tree.row-tree-B.tavue-row-tree-is-open>.tavue-row-tree-parent {
+  background: #BBDDCC;
+}
+
+.tavue-row-tree.row-tree-B>.tavue-row-tree-children {
+  border-left: 4px solid #448866;
+  /* border-bottom: 2px solid #448866; */
+}
+
+.tavue-row-tree.row-tree-B>.tavue-row-tree-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
+  background: #BBDDCC;
+  /* border-bottom: 2px solid #446688; */
+}
+
+.tavue-row-tree.row-tree-B .tree-btn {
+  background: #88CCAA;
+  border: 1px solid #448866;
+  /* border-bottom: 2px solid #446688; */
+}
+
+.tavue-table {
+  border: 1px solid #CCCCCC;
+}
+
+.tavue-row {
+  border-bottom: 1px solid #BBBBBB;
+}
+
+.tavue-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 1px solid #E0E0E0;
+  padding: 0.1em 0.5em;
+}
+
+.tavue-cell[data-col_name="tree"] {
+  padding: 0;
+}
+
+.tavue-row-header {
+  background-color: #CCCCCC;
+}
+
+.tavue-row-data:hover {
+  background-color: #F8FFFF;
+}
+
+/* .tavue-table:not(.resizing) .tavue-cell.hover {
+  background-color: #F8FFFF;
+} */
+
+.tavue-table:not(.resizing) .tavue-row-header .tavue-cell.hover {
+  background-color: #DDE8E8;
+}
+
+/* .tavue-table:not(.resizing) .tavue-cell:hover {
+  background-color: #F0FFFF;
+} */
+
+.tavue-cell.border-left-hover {
+  box-shadow: inset 4px 0 2px -2px rgb(160, 192, 192, 0.5)
+}
+
+.tavue-cell.border-right-hover {
+  box-shadow: inset -4px 0 2px -2px rgb(160, 192, 192, 0.5)
+}
+
+.tavue-cell.border-left-moving {
+  box-shadow: inset 4px 0 2px -2px rgb(64, 192, 192, 0.7)
+}
+
+.tavue-cell.border-right-moving {
+  box-shadow: inset -4px 0 2px -2px rgb(64, 192, 192, 0.7)
+}

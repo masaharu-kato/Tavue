@@ -1,85 +1,40 @@
 <script setup lang="ts">
 import { VNodeRef } from 'vue';
-import { TableState, BorderState, ColumnState } from '../models/tavue';
-
-const DETECT_WIDTH = 5;
+import { RowType, TableState, BorderState, ColumnState } from '../models/tavue';
 
 const props = defineProps<{
-  name: string,
+  //  User properties
+  name: string,          //  Column name
+  resizeable?: boolean,  //  Is resizeable or not
+  sortable?: boolean,    //  Is sortable or not
+  filtable?: boolean,    //  Is filtable or not
+  auto_expand?: boolean, //  Expand width if the some contents are hidden
+  auto_shrink?: boolean, //  Shrink width if the some cell widths are too large
+
+  //  Auto-set properties
   index?: number,
   table_state?: TableState,
   state?: ColumnState,
   border_left?: BorderState,
   border_right?: BorderState,
-  is_header?: boolean,
-  is_footer?: boolean,
-  row_index?: number,
-  row?: any,
   ref_to?: VNodeRef,
+  is_header?: boolean,  //  Is in a header row or not
+  is_footer?: boolean,  //  Is in a footer row or not
+  row?: RowType,        //  Row data
+  row_i?: number,       //  Row index (from 0)
+  width_diff?: number,  //  Width difference from standard (for tree table)
+  is_open?: boolean,    //  (Tree table) Child table is open (visible) or not
+  set_open?: (f: boolean) => void,  //  (Tree table) Set child table open state
 }>()
-
-function onMouseEnter(e: MouseEvent) {
-  props.state!.hover = true;
-}
-
-function onMouseLeave(e: MouseEvent) {
-  props.state!.hover = false;
-  // props.border_left!.hover = false;
-  // props.border_right!.hover = false;
-  // props.border_left!.moving = false;
-  // props.border_right!.moving = false;
-}
-
-function onMouseMove(e: MouseEvent) {
-  if (!props.border_left?.moving) {
-    props.border_left!.hover = e.offsetX <= DETECT_WIDTH;
-  }
-  if (!props.border_right?.moving) {
-    props.border_right!.hover = (props.state!.width! - e.offsetX) <= DETECT_WIDTH;
-  }
-}
-
-function onMouseDown(e: MouseEvent) {
-  if (props.border_left?.hover) {
-    props.border_left.moving = true;
-    props.table_state!.moving_border = props.index!;
-    props.table_state!.moving_last_x = e.screenX;
-    return;
-  }
-  if (props.border_right?.hover) {
-    props.border_right.moving = true;
-    props.table_state!.moving_border = props.index! + 1;
-    props.table_state!.moving_last_x = e.screenX;
-    return;
-  }
-}
-
-function onMouseUp(e: MouseEvent) {
-  props.border_left!.moving = false;
-  props.border_right!.moving = false;
-  props.table_state!.moving_border = undefined;
-  props.table_state!.moving_last_x = undefined;
-}
-
-function onDoubleClick(e: MouseEvent) {
-  if (props.border_right?.hover) {
-    props.state!.width = props.state?.enough_width;
-  }
-}
-
-// onMounted(() => {
-//   // console.log(`col[${props.row_index}].${props.name}: mounted.`)
-// })
 
 </script>
 <template>
   <div :ref="ref_to" class="tavue-cell"
     :class="{ hover: state?.hover, 'border-left-hover': border_left?.hover, 'border-right-hover': border_right?.hover, 'border-left-moving': border_left?.moving, 'border-right-moving': border_right?.moving }"
-    :data-index="index" :data-name="name" :style="{ width: state?.width ? `${state?.width}px` : '' }"
-    @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" @mousemove="onMouseMove" @mousedown="onMouseDown"
-    @mouseup="onMouseUp" @dblclick="onDoubleClick">
+    :data-col_i="index" :data-col_name="name"
+    :style="{ width: state?.width ? `${state?.width - (width_diff ?? 0)}px` : '' }">
     <slot v-if="is_header" name="header"></slot>
-    <slot v-if="row" name="row" :row="row"></slot>
+    <slot v-if="row" name="row" :row="row" :row_i="row_i" :is_open="is_open" :set_open="set_open"></slot>
     <slot v-if="is_footer" name="footer"></slot>
   </div>
 </template>
