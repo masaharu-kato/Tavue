@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { onMounted, reactive, useSlots } from 'vue';
-import { RowType, InternalTableProps, TableState, ColumnState, BorderState } from '../models/tavue';
-import TavueRows from './_TavueRows.vue';
+import { onMounted, reactive, Slots, useSlots, VNodeRef } from 'vue';
+import { RowType, InternalTableProps, ColumnBinds, ColumnSlots, TableState, ColumnState, BorderState, slot_nodes, slot_node_0, RowSlots, ColumnProps } from '../models/tavue';
+import TavueTreeRows from './_TavueTreeRows.vue';
+import TavueRow from './_TavueRow.vue';
+
+//  Border width
+const DETECT_WIDTH = 5;
 
 // const props = defineProps<{
 //   rows: RowType[]
@@ -14,45 +18,77 @@ const props = defineProps<{
   depth_offset?: (depth: number) => number
 }>()
 
+//  Extract variables
 const { tree_children, depth_offset } = props;
 const children_opened = !!props.children_opened;
 
-const DETECT_WIDTH = 5;
-
 const slots = useSlots()
-const row_header = slots.row_header ? slots.row_header()[0] : 'div'
-const slot_row = slots.row
-const slot_row_tree = slots.row_tree
-const slot_row_tree_parent = slots.row_tree_parent
-const slot_row_tree_child = slots.row_tree_child
-const row_footer = slots.row_footer ? slots.row_footer()[0] : 'div'
-// const row_child_table = slots.row_child_table ? slots.row_child_table()[0] : 'div'
-const columns = slots.columns ? slots.columns() : []
+const header_row_node = slot_node_0(slots.row_header, undefined, 'div')
+const footer_row_node = slot_node_0(slots.row_footer, undefined, 'div')
+const row_slots = {
+  data: slots.row,
+  tree: slots.tree_row,
+  tree_parent: slots.tree_parent_row,
+  tree_child: slots.tree_child_row,
+} as RowSlots;
+
+//  Columns
+if (!slots.columns) throw new Error('Slot `columns` not specified.')
+
+//  Set column indexes
+const cols_i = slots.columns().map((_, i) => i)
+
+//  Load slots of columns
+const cols_slots = slots.columns().map(c => {
+  if (!(c.children instanceof Object) || c.children instanceof Array) {
+    throw new Error('Invalid node in `columns` slot.')
+  }
+  const slots = c.children as Slots
+  return {
+    header: slot_nodes(slots.header),
+    row: slots.row ? props => slots.row!(props) : props => [],
+    footer: slot_nodes(slots.footer),
+  } as ColumnSlots
+})
+
+//  Load props of columns
+const cols_props = slots.columns().map(c => {
+  const c_props = (c.props ?? {}) as ColumnProps
+  if (!c_props.name) throw new Error('Column name is not set.')
+  return c_props;
+})
+
+//  Header columns values
+const cols_header_nodes = cols_slots.map(col_slots => col_slots.header)
+const cols_footer_nodes = cols_slots.map(col_slots => col_slots.footer)
+
 
 //  States
 const table_state = reactive({} as TableState)
-const col_states = reactive(columns.map(_ => ({} as ColumnState)));
-const border_states = reactive([null, ...columns].map(_ => ({} as BorderState)));
-const cols_cells = reactive(columns.map(_ => [] as HTMLElement[]));
-
-const setCellsRef = columns.map((_, i) => (el: HTMLElement) => {
-  cols_cells[i].push(el);
-})
+const col_states = reactive(cols_i.map(_ => ({} as ColumnState)));
+const borders = reactive([null, ...cols_i].map(_ => ({} as BorderState)));
+const cols_cells = reactive(cols_i.map(_ => [] as HTMLElement[]));
 
 //  Properties for Column
-const column_binds = columns.map((_, i) => ({
+const cols_binds = cols_i.map(i => ({
   index: i,
   table_state,
   state: col_states[i],
-  border_left: border_states[i],
-  border_right: border_states[i + 1],
-  ref_to: setCellsRef[i]
-}))
+  border_L: borders[i],
+  border_R: borders[i + 1],
+  ref_to: ((el: HTMLElement) => { cols_cells[i].push(el) }) as unknown as VNodeRef
+} as ColumnBinds))
 
 //  Table properties for Rows
 const tprops = {
-  columns, column_binds, slot_row, slot_row_tree, slot_row_tree_parent, slot_row_tree_child,
-  tree_children, children_opened, depth_offset
+  tree_children,
+  children_opened,
+  depth_offset,
+  cols_i,
+  cols_props,
+  cols_slots,
+  cols_binds,
+  row_slots,
 } as InternalTableProps
 
 onMounted(() => {
@@ -154,11 +190,12 @@ function onDoubleClick(e: MouseEvent) {
 <template>
 
   <!-- Definition of Slots (for develpments only, not shown) -->
-  <slot v-if="null" name="row_header"></slot>
+  <slot v-if="null" name="header_row"></slot>
   <slot v-if="null" name="row" :row="(null as RowType)" :row_i="0" :is_open="false"></slot>
-  <slot v-if="null" name="row_footer"></slot>
-  <slot v-if="null" name="row_tree" :row="(null as RowType)" :row_i="0"></slot>
-  <slot v-if="null" name="row_tree_child" :row="(null as RowType)" :row_i="0"></slot>
+  <slot v-if="null" name="footer_row"></slot>
+  <slot v-if="null" name="tree_row" :row="(null as RowType)" :row_i="0"></slot>
+  <slot v-if="null" name="tree_parent_row" :row="(null as RowType)" :row_i="0"></slot>
+  <slot v-if="null" name="tree_child_row" :row="(null as RowType)" :row_i="0"></slot>
   <slot v-if="null" name="columns"></slot>
 
 
@@ -169,17 +206,17 @@ function onDoubleClick(e: MouseEvent) {
     @mouseup="onMouseUp" @mousemove="onMousemove" @dblclick="onDoubleClick">
 
     <!-- row header -->
-    <component :is="row_header" class="tavue-row tavue-row-header">
-      <component v-for="(c, i) in columns" :is="c" v-bind="column_binds[i]" :is_header="true" />
-    </component>
+    <TavueRow :row_node="header_row_node" :cols_binds="cols_binds" :cols_nodes="cols_header_nodes"
+      class="tavue-row-header">
+    </TavueRow>
 
     <!-- row data (for each row in rows data) -->
-    <TavueRows :rows="rows" :tprops="tprops" :depth="0"></TavueRows>
+    <TavueTreeRows :rows="rows" :tprops="tprops" :depth="0"></TavueTreeRows>
 
     <!-- row footer -->
-    <component :is="row_footer" class="tavue-row tavue-row-footer">
-      <component v-for="(c, i) in columns" :is="c" v-bind="column_binds[i]" :is_footer="true" />
-    </component>
+    <TavueRow :row_node="footer_row_node" :cols_binds="cols_binds" :cols_nodes="cols_footer_nodes"
+      class="tavue-row-footer">
+    </TavueRow>
 
   </div>
 

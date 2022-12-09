@@ -31,7 +31,7 @@ function row_onclick(row: any, row_i: number) {
       <TavueColumn name="tree">
         <template #header></template>
         <template #row="{ is_open, set_open }">
-          <template v-if="(is_open != undefined && set_open != undefined)">
+          <template v-if="(is_open != undefined)">
             <button class="tree-btn" @click="set_open(!is_open)">
               <span v-if="is_open" class="tree_txt_close">－</span>
               <span v-else class="tree_txt_open">＋</span>
