@@ -1,19 +1,35 @@
 <script setup lang="ts">
 import { onMounted, reactive, useSlots } from 'vue';
-import { TableState, ColumnState, BorderState } from '../models/tavue';
+import { RowType, TableProps, InternalTableProps, TableState, ColumnState, BorderState } from '../models/tavue';
+import TavueRows from './_TavueRows.vue';
 
-defineProps<{
-  rows: any[]
+// const props = defineProps<{
+//   rows: RowType[]
+// } & TableProps>()
+
+const props = defineProps<{
+  rows: RowType[]
+  tree_children: (row: RowType, row_i: number) => RowType[] | undefined
+  children_opened?: boolean
+  depth_offset?: (depth: number) => number
 }>()
+
+const { tree_children, depth_offset } = props;
+const children_opened = !!props.children_opened;
 
 const DETECT_WIDTH = 5;
 
 const slots = useSlots()
 const row_header = slots.row_header ? slots.row_header()[0] : 'div'
 const slot_row = slots.row
+const slot_row_tree = slots.row_tree
+const slot_row_tree_parent = slots.row_tree_parent
+const slot_row_tree_child = slots.row_tree_child
 const row_footer = slots.row_footer ? slots.row_footer()[0] : 'div'
+// const row_child_table = slots.row_child_table ? slots.row_child_table()[0] : 'div'
 const columns = slots.columns ? slots.columns() : []
 
+//  States
 const table_state = reactive({} as TableState)
 const col_states = reactive(columns.map(_ => ({} as ColumnState)));
 const border_states = reactive([null, ...columns].map(_ => ({} as BorderState)));
@@ -22,6 +38,22 @@ const cols_cells = reactive(columns.map(_ => [] as HTMLElement[]));
 const setCellsRef = columns.map((_, i) => (el: HTMLElement) => {
   cols_cells[i].push(el);
 })
+
+//  Properties for Column
+const column_binds = columns.map((_, i) => ({
+  index: i,
+  table_state,
+  state: col_states[i],
+  border_left: border_states[i],
+  border_right: border_states[i + 1],
+  ref_to: setCellsRef[i]
+}))
+
+//  Table properties for Rows
+const tprops = {
+  columns, column_binds, slot_row, slot_row_tree, slot_row_tree_parent, slot_row_tree_child,
+  tree_children, children_opened, depth_offset
+} as InternalTableProps
 
 onMounted(() => {
   cols_cells.map((col_cells, i) => {
@@ -116,47 +148,35 @@ function onDoubleClick(e: MouseEvent) {
   }
 }
 
-function _states(i: number) {
-  return {
-    index: i,
-    table_state: table_state,
-    state: col_states[i],
-    border_left: border_states[i],
-    border_right: border_states[i + 1],
-    ref_to: setCellsRef[i]
-  }
-}
-
 </script>
 <template>
 
   <!-- Definition of Slots (for develpments only, not shown) -->
   <slot v-if="null" name="row_header"></slot>
-  <slot v-if="null" name="row" :row="null" :row_i="0"></slot>
+  <slot v-if="null" name="row" :row="(null as RowType)" :row_i="0" :is_open="false"></slot>
   <slot v-if="null" name="row_footer"></slot>
+  <slot v-if="null" name="row_tree" :row="(null as RowType)" :row_i="0"></slot>
+  <slot v-if="null" name="row_tree_child" :row="(null as RowType)" :row_i="0"></slot>
   <slot v-if="null" name="columns"></slot>
 
 
   <!-- Actual elements -->
 
   <!-- Tavue table -->
-  <div class="tavue-table" :class="{ resizing: !!table_state.moving_border }" @mousedown="onMouseDown"
+  <div class="tavue-rows tavue-table" :class="{ resizing: !!table_state.moving_border }" @mousedown="onMouseDown"
     @mouseup="onMouseUp" @mousemove="onMousemove" @dblclick="onDoubleClick">
 
     <!-- row header -->
     <component :is="row_header" class="tavue-row tavue-row-header">
-      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :is_header="true" />
+      <component v-for="(c, i) in columns" :is="c" v-bind="column_binds[i]" :is_header="true" />
     </component>
 
     <!-- row data (for each row in rows data) -->
-    <component v-for="(row, row_i) in rows" :is="slot_row ? slot_row({ row, row_i })[0] : 'div'"
-      class="tavue-row tavue-row-data">
-      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :row="row" :row_i="row_i" />
-    </component>
+    <TavueRows :rows="rows" :tprops="tprops" :depth="0"></TavueRows>
 
     <!-- row footer -->
     <component :is="row_footer" class="tavue-row tavue-row-footer">
-      <component v-for="(c, i) in columns" :is="c" v-bind="_states(i)" :is_footer="true" />
+      <component v-for="(c, i) in columns" :is="c" v-bind="column_binds[i]" :is_footer="true" />
     </component>
 
   </div>
