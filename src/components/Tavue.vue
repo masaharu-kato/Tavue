@@ -9,7 +9,7 @@ import TavueRows from './_TavueRows.vue';
 
 const props = defineProps<{
   rows: RowType[]
-  tree_children: (row: RowType, row_i: number) => RowType[] | undefined
+  tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
 }>()
@@ -59,7 +59,7 @@ onMounted(() => {
   cols_cells.map((col_cells, i) => {
     const widths = col_cells.map(cell => cell.offsetWidth);
     const max_width = widths.reduce((a, b) => a > b ? a : b, 0)
-    col_states[i].enough_width = max_width;
+    col_states[i].enough_width = max_width + 1;
     if (col_states[i].width == undefined) col_states[i].width = col_states[i].enough_width;
   })
 })
