@@ -65,7 +65,7 @@ const cols_footer_nodes = cols_slots.map(col_slots => col_slots.footer)
 
 //  States
 const table_state = reactive({} as TableState)
-const col_states = reactive(cols_i.map(_ => ({} as ColumnState)));
+const cols_state = reactive(cols_i.map(_ => ({} as ColumnState)));
 const borders = reactive([null, ...cols_i].map(_ => ({} as BorderState)));
 const cols_cells = reactive(cols_i.map(_ => [] as HTMLElement[]));
 
@@ -73,7 +73,7 @@ const cols_cells = reactive(cols_i.map(_ => [] as HTMLElement[]));
 const cols_binds = cols_i.map(i => ({
   index: i,
   table_state,
-  state: col_states[i],
+  state: cols_state[i],
   border_L: borders[i],
   border_R: borders[i + 1],
   ref_to: ((el: HTMLElement) => { cols_cells[i].push(el) }) as unknown as VNodeRef
@@ -92,13 +92,37 @@ const tprops = {
 } as InternalTableProps
 
 onMounted(() => {
-  cols_cells.map((col_cells, i) => {
-    const widths = col_cells.map(cell => cell.offsetWidth);
-    const max_width = widths.reduce((a, b) => a > b ? a : b, 0)
-    col_states[i].enough_width = max_width + 1;
-    if (col_states[i].width == undefined) col_states[i].width = col_states[i].enough_width;
+  cols_i.map(col_i => {
+    refreshColumnEnoughWidth(col_i)
+    justifyColumnWidth(col_i)
   })
 })
+
+function max(vals: number[]): number {
+  return vals.slice(1).reduce((a, b) => a > b ? a : b, vals[0])
+}
+
+function getEnoughWidth(elm: HTMLElement) {
+  // return elm.offsetWidth > elm.scrollWidth ? elm.offsetWidth : elm.scrollWidth
+  return elm.offsetWidth
+}
+
+function getWidthDiff(elm: HTMLElement) {
+  // return elm.offsetWidth > elm.scrollWidth ? elm.offsetWidth : elm.scrollWidth
+  return Number(elm.dataset.width_diff) || 0
+}
+
+//  Refresh enough width values of columns
+function refreshColumnEnoughWidth(col_i: number) {
+  const col_cells = cols_cells[col_i];
+  const max_width = max(col_cells.map(cell => getEnoughWidth(cell)))
+  const max_width_diff = max(col_cells.map(cell => getWidthDiff(cell)))
+  cols_state[col_i].enough_width = max_width + max_width_diff + 1;
+}
+
+function justifyColumnWidth(col_i: number) {
+  cols_state[col_i].width = cols_state[col_i].enough_width;
+}
 
 //  Get a target column on the current cursor location
 function getTargetColumn(e: MouseEvent) {
@@ -150,7 +174,7 @@ function onMousemove(e: MouseEvent) {
   if (table_state.moving_border != undefined) {
     const i_border = table_state.moving_border;
     if (i_border > 0 && table_state.moving_last_x) {
-      col_states[i_border - 1].width! += (e.screenX - table_state.moving_last_x);
+      cols_state[i_border - 1].width! += (e.screenX - table_state.moving_last_x);
     }
     table_state.moving_last_x = e.screenX
     return
@@ -158,10 +182,10 @@ function onMousemove(e: MouseEvent) {
   //  Get the current hovering column
   const t_col_i = getTargetColumn(e)
   if (t_col_i != undefined) {
-    const width = col_states[t_col_i].width!
+    const width = cols_state[t_col_i].width!
     //  Set hover states
     if (table_state.hovering_col_i != t_col_i) {
-      col_states.map((cs, i) => { cs.hover = i == t_col_i })
+      cols_state.map((cs, i) => { cs.hover = i == t_col_i })
       table_state.hovering_col_i = t_col_i
     }
     setBorderHover(t_col_i, e.offsetX <= DETECT_WIDTH)
@@ -182,9 +206,8 @@ function onDoubleClick(e: MouseEvent) {
   //  If the hovering border exists and not 0 (= most left border),
   //  justify the column width on the left of the border.
   if (table_state.hovering_border) {
-    const col = col_states[table_state.hovering_border - 1]
-    col.width = col.enough_width;
-    e.stopPropagation();
+    const col_i = table_state.hovering_border - 1
+    justifyColumnWidth(col_i)
   }
 }
 
