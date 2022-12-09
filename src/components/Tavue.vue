@@ -74,15 +74,17 @@ function getTargetColumn(e: MouseEvent) {
 //  Set the border hovering state
 function setBorderHover(i: number, hover: boolean) {
   const border = border_states[i];
-  if (hover) {
-    if (!border.hover) {
-      border.hover = true;
-      table_state.hovering_border = i;
-    }
-  } else {
-    if (border.hover) {
-      border.hover = false;
-      table_state.hovering_border = undefined;
+  if (i >= 1 && border) {
+    if (hover) {
+      if (!border.hover) {
+        border.hover = true;
+        table_state.hovering_border = i;
+      }
+    } else {
+      if (border.hover) {
+        border.hover = false;
+        table_state.hovering_border = undefined;
+      }
     }
   }
 }
@@ -90,7 +92,7 @@ function setBorderHover(i: number, hover: boolean) {
 //  Start the border moving
 function startBorderMove(i: number, e: MouseEvent) {
   const border = border_states[i];
-  if (border.hover && !border.moving && !table_state.moving_border) {
+  if (i >= 1 && border && border.hover && !border.moving && !table_state.moving_border) {
     border.moving = true
     table_state.moving_border = i;
     table_state.moving_last_x = e.screenX;
