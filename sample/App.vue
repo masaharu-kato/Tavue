@@ -45,7 +45,7 @@ function row_onclick(row: any, row_i: number) {
         <template #row="{ row }">{{ row.id }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="name">
+      <TavueColumn name="name" :resizeable="true">
         <template #header>Name</template>
         <template #row="{ row }">
           <span class="first_name">{{ row.first_name }}</span>
@@ -54,17 +54,17 @@ function row_onclick(row: any, row_i: number) {
         </template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="gender">
+      <TavueColumn name="gender" :resizeable="true">
         <template #header>Gender</template>
         <template #row="{ row }">{{ row.gender }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="email">
+      <TavueColumn name="email" :resizeable="true">
         <template #header>E-Mail</template>
         <template #row="{ row }">{{ row.email }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="ip_address">
+      <TavueColumn name="ip_address" :resizeable="true">
         <template #header>IP Address</template>
         <template #row="{ row }">{{ row.ip_address }}</template>
         <template #footer></template>
