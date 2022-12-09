@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, useSlots } from 'vue';
-import { RowType, TableProps, InternalTableProps, TableState, ColumnState, BorderState } from '../models/tavue';
+import { RowType, InternalTableProps, TableState, ColumnState, BorderState } from '../models/tavue';
 import TavueRows from './_TavueRows.vue';
 
 // const props = defineProps<{

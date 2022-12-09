@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Tavue from './components/Tavue.vue';
-import TavueColumn from './components/TavueColumn.vue';
+import { Tavue, TavueColumn } from '../src';
+import './app.css'
 
 import _rows from './assets/tree_sample.json';
 // const rows = _rows.slice(0, 100);
