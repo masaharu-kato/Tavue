@@ -44,29 +44,34 @@ export interface ColumnBindsOnTable {
 }
 
 export interface ColumnBinds extends ColumnBindsOnTable {
-  width_diff: number,  //  Width difference from standard (for tree table)
+  width_diff?: number,  //  Width difference from standard (for tree table)
   // is_open?: boolean,    //  (Tree table) Child table is open (visible) or not
   // set_open: (f: boolean) => void,  //  (Tree table) Set child table open state
 }
 
 export interface RowSlots {
-  data: Slot
-  tree: Slot
-  tree_parent: Slot
-  tree_child: Slot
+  header?: Slot
+  footer?: Slot
+  data?: Slot
+  tree?: Slot
+  tree_parent?: Slot
+  tree_child?: Slot
 }
 
 export type TableProps = {
-  tree_children: (row: RowType, row_i: number) => RowType[] | undefined
+  tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
 }
 
 export interface InternalTableProps extends TableProps {
+  table_state: TableState,
+  cols_state: ColumnState[],
+  borders_state: BorderState[],
   cols_i: number[]
   cols_props: ColumnProps[]
   cols_slots: ColumnSlots[]
-  cols_binds: ColumnBindsOnTable[]
+  cols_binds: ColumnBinds[]
   row_slots: RowSlots
 }
 
@@ -77,6 +82,17 @@ export interface ColumnProps {
   filtable?: boolean,    //  Is filtable or not
   auto_expand?: boolean, //  Expand width if the some contents are hidden
   auto_shrink?: boolean, //  Shrink width if the some cell widths are too large
+}
+
+export interface TableOptions {
+  table: TableProps
+  row: {
+    slots: RowSlots
+  }
+  cols: {
+    props: ColumnProps
+    slots: ColumnSlots
+  }[]
 }
 
 export function slot_nodes(slot: Slot | undefined, props?: Object) {
