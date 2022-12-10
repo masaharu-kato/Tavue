@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VNode } from 'vue';
 import { ColumnBinds } from '../models/tavue';
-import TavueCell from './_TavueCell.vue';
+import TavueCell from './TavueCell.vue';
 
 defineProps<{
   row_node: VNode,

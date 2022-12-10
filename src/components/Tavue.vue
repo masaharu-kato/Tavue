@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, Slots, useSlots, VNodeRef } from 'vue';
 import { RowType, InternalTableProps, ColumnBinds, ColumnSlots, TableState, ColumnState, BorderState, slot_nodes, slot_node_0, RowSlots, ColumnProps } from '../models/tavue';
-import TavueTreeRows from './_TavueTreeRows.vue';
-import TavueRow from './_TavueRow.vue';
+import TavueTreeRows from './TavueTreeRows.vue';
+import TavueRow from './TavueRow.vue';
 
 //  Border width
 const DETECT_WIDTH = 5;

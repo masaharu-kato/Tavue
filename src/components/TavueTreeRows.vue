@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RowType, InternalTableProps } from '../models/tavue'
-import TavueTreeRow from './_TavueTreeRow.vue';
+import TavueTreeRow from './TavueTreeRow.vue';
 
 const props = defineProps<{
   rows: RowType[],

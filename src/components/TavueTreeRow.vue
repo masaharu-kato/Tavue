@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RowType, InternalTableProps, ColumnBinds, slot_node_0 } from '../models/tavue'
-import TavueTreeRows from './_TavueTreeRows.vue';
-import TavueDataRow from './_TavueDataRow.vue';
+import TavueTreeRows from './TavueTreeRows.vue';
+import TavueDataRow from './TavueDataRow.vue';
 
 const props = defineProps<{
   row: RowType,
