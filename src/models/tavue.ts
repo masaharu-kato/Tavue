@@ -1,4 +1,4 @@
-import { Slot, VNode, VNodeRef } from "vue"
+import { Slot, VNode } from "vue"
 
 export type RowType = any
 
@@ -41,7 +41,6 @@ export interface ColumnBindsOnTable {
   state: ColumnState,
   border_L?: BorderState,
   border_R?: BorderState,
-  ref_to: VNodeRef,  //  (el: HTMLElement) => void
 }
 
 export interface ColumnBinds extends ColumnBindsOnTable {
