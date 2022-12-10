@@ -17,6 +17,6 @@ const props = defineProps<{
 
 <template>
   <TavueRow :row_node="row_node" :cols_binds="cols_binds"
-    :cols_nodes="cols_slots.map(col_slots => col_slots.row({ row, row_i, is_open, set_open }))" class="tavue-row-data">
+    :cols_nodes="cols_slots.map(col_slots => col_slots.row({ row, row_i, is_open, set_open }))" class="tavue-data-row">
   </TavueRow>
 </template>

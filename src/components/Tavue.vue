@@ -242,7 +242,7 @@ function onDoubleClick(e: MouseEvent) {
 
     <!-- row header -->
     <TavueRow :row_node="header_row_node" :cols_binds="cols_binds" :cols_nodes="cols_header_nodes"
-      class="tavue-row-header">
+      class="tavue-header-row">
     </TavueRow>
 
     <!-- row data (for each row in rows data) -->
@@ -250,7 +250,7 @@ function onDoubleClick(e: MouseEvent) {
 
     <!-- row footer -->
     <TavueRow :row_node="footer_row_node" :cols_binds="cols_binds" :cols_nodes="cols_footer_nodes"
-      class="tavue-row-footer">
+      class="tavue-footer-row">
     </TavueRow>
 
   </div>

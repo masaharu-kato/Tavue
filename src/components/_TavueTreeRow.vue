@@ -43,16 +43,15 @@ const cols_binds = tp.cols_binds.map((col_binds, i) => ({
 <template>
 
   <!-- Children exists -->
-  <component v-if="child_rows" :is="tree_row_node" class="tavue-row-tree"
-    :class="{ 'tavue-row-tree-is-open': is_open }">
+  <component v-if="child_rows" :is="tree_row_node" class="tavue-tree-row" :class="{ 'tavue-tree-row-opened': is_open }">
 
     <!-- Parent row -->
     <TavueDataRow :row_node="tree_parent_row_node" v-bind="{ cols_binds, cols_slots, row, row_i, is_open, set_open }"
-      class="tavue-row-tree-parent">
+      class="tavue-tree-row-parent">
     </TavueDataRow>
 
     <!-- Children rows -->
-    <component :is="tree_child_row_node" class="tavue-rows tavue-row-tree-children">
+    <component :is="tree_child_row_node" class="tavue-rows tavue-tree-row-children">
       <TavueTreeRows :rows="child_rows" :tprops="tp" :depth="(depth + 1)"></TavueTreeRows>
     </component>
 

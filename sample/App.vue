@@ -24,8 +24,8 @@ function row_onclick(row: any, row_i: number) {
     <!-- <template #row_footer>
       <div></div>
     </template> -->
-    <template #row_tree="{ row, row_i }">
-      <div :class="{ 'row-tree-A': !!row.child_A, 'row-tree-B': !!row.child_B }"></div>
+    <template #row_tree="{ row }">
+      <div :class="{ 'tree-row-A': !!row.child_A, 'tree-row-B': !!row.child_B }"></div>
     </template>
     <template #columns>
       <TavueColumn name="tree">
