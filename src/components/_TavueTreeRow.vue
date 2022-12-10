@@ -48,7 +48,7 @@ const cols_binds = tp.cols_binds.map((col_binds, i) => ({
 
     <!-- Parent row -->
     <TavueDataRow :row_node="tree_parent_row_node" v-bind="{ cols_binds, cols_slots, row, row_i, is_open, set_open }"
-      class="tavue-row-data tavue-row-tree-parent">
+      class="tavue-row-tree-parent">
     </TavueDataRow>
 
     <!-- Children rows -->
@@ -59,8 +59,7 @@ const cols_binds = tp.cols_binds.map((col_binds, i) => ({
   </component>
 
   <!-- No children (parent row only) -->
-  <TavueDataRow v-else v-bind="{ row_node, cols_binds, cols_slots, row, row_i, is_open, set_open }"
-    class="tavue-row-data">
+  <TavueDataRow v-else v-bind="{ row_node, cols_binds, cols_slots, row, row_i, is_open, set_open }">
   </TavueDataRow>
 
 </template>
