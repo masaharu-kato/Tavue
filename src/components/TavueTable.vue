@@ -34,6 +34,12 @@ const cols_binds = cols_i.map(i => ({
   border_R: borders_state[i + 1],
 } as ColumnBinds))
 
+//  Set default column width
+cols_i.map(col_i => {
+  cols_state[col_i].width = cols_props[col_i].width
+  cols_state[col_i].user_width = cols_state[col_i].width
+})
+
 function display_changed() {
   nextTick(() => {
     refreshAndJustifyColumnsWidth()

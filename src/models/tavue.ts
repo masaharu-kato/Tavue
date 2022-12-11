@@ -79,6 +79,7 @@ export interface InternalTableProps extends TableProps {
 
 export interface ColumnProps {
   name: string,          //  Column name
+  width?: number,        //  Initial width 
   resizeable?: boolean,  //  Is resizeable or not
   // sortable?: boolean,    //  Is sortable or not
   // filtable?: boolean,    //  Is filtable or not

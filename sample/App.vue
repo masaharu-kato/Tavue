@@ -54,7 +54,7 @@ function row_onclick(row: any, row_i: number) {
         </template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="gender" :resizeable="true">
+      <TavueColumn name="gender" :width="80" :resizeable="true">
         <template #header>Gender</template>
         <template #row="{ row }">{{ row.gender }}</template>
         <template #footer></template>
