@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { reactive, Slots, useSlots } from 'vue';
-import { RowType, InternalTableProps, ColumnBinds, ColumnSlots, TableState, ColumnState, BorderState, slot_nodes, RowSlots, ColumnProps, TableOptions } from '../models/tavue';
+import { RowType, slot_nodes, ColumnProps, ColumnOptions, TableOptions } from '../models/tavue';
 import TavueTable from './TavueTable.vue';
 
 const props = defineProps<{
-  rows: RowType[]
+  rows: RowType[]   //  Rows data
+  column: ColumnOptions   //  Column options default values
   tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
@@ -33,19 +34,24 @@ const opts: TableOptions = {
   },
   cols: slots.columns().map(c => {
 
-    const props = (c.props ?? {}) as ColumnProps
-    if (!props.name) throw new Error('Column name is not set.')
+    //  Load column props
+    const col_props = (c.props ?? {}) as ColumnProps
+    if (!col_props.name) throw new Error('Column name is not set.')
 
+    //  Set default prop values
+    col_props.resizeable = col_props.resizeable ?? props.column.resizeable;
+
+    //  Load column slots
     if (!(c.children instanceof Object) || c.children instanceof Array) {
       throw new Error('Invalid node in `columns` slot.')
     }
     const slots = c.children as Slots
 
     return {
-      props,
+      props: col_props,
       slots: {
         header: slot_nodes(slots.header),
-        row: slots.row ? props => slots.row!(props) : props => [],
+        row: slots.row ? row_props => slots.row!(row_props) : row_props => [],
         footer: slot_nodes(slots.footer),
       }
     }
