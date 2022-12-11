@@ -64,6 +64,10 @@
   padding: 0.1em 0.5em;
 }
 
+.tavue-cell:last-of-type {
+  border-right: 1px solid #E0E0E0;
+}
+
 .tavue-cell[data-col_name="tree"] {
   padding: 0;
 }
