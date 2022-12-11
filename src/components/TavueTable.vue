@@ -218,7 +218,9 @@ function onDoubleClick(e: MouseEvent) {
       </TavueRow>
 
       <!-- row data (for each row in rows data) -->
-      <TavueTreeRows :rows="rows" :tprops="tprops" :depth="0"></TavueTreeRows>
+      <div class="tavue-rows tavue-data-rows">
+        <TavueTreeRows :rows="rows" :tprops="tprops" :depth="0"></TavueTreeRows>
+      </div>
 
       <!-- row footer -->
       <TavueRow :row_node="slot_node_0(opts.row.slots.footer, {}, 'div')" :cols_binds="cols_binds"
