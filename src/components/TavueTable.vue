@@ -27,6 +27,7 @@ const borders_state = reactive([null, ...cols_i].map(_ => ({} as BorderState)));
 //  Properties for Column
 const cols_binds = cols_i.map(i => ({
   index: i,
+  name: cols_props[i].name,
   table_state,
   state: cols_state[i],
   border_L: borders_state[i],
