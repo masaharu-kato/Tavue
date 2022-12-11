@@ -202,6 +202,21 @@ function onDoubleClick(e: MouseEvent) {
   }
 }
 
+function onMouseLeave(e: MouseEvent) {
+  //  Unset hovered column if exists
+  const hov_col_i = table_state.hovering_col_i
+  if (hov_col_i) {
+    cols_state[hov_col_i].hover = false
+    table_state.hovering_border = undefined
+  }
+  //  Unset hovered border if exists
+  const hov_border_i = table_state.hovering_border
+  if (hov_border_i) {
+    borders_state[hov_border_i].hover = false
+    table_state.hovering_border = undefined
+  }
+}
+
 </script>
 <template>
 
@@ -210,7 +225,7 @@ function onDoubleClick(e: MouseEvent) {
 
     <!-- Tavue table -->
     <div class="tavue-rows tavue-table" :class="{ resizing: !!table_state.moving_border }" @mousedown="onMouseDown"
-      @mouseup="onMouseUp" @mousemove="onMouseMove" @dblclick="onDoubleClick">
+      @mouseup="onMouseUp" @mousemove="onMouseMove" @dblclick="onDoubleClick" @mouseleave="onMouseLeave">
 
       <!-- row header -->
       <TavueRow :row_node="slot_node_0(opts.row.slots.header, {}, 'div')" :cols_binds="cols_binds"
