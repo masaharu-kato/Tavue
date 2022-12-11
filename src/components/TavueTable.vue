@@ -205,22 +205,27 @@ function onDoubleClick(e: MouseEvent) {
 </script>
 <template>
 
-  <!-- Tavue table -->
-  <div ref="table_elm_ref" class="tavue-rows tavue-table" :class="{ resizing: !!table_state.moving_border }"
-    @mousedown="onMouseDown" @mouseup="onMouseUp" @mousemove="onMouseMove" @dblclick="onDoubleClick">
+  <!-- Tavue table wrapper -->
+  <div ref="table_elm_ref" class="tavue-table-wrapper">
 
-    <!-- row header -->
-    <TavueRow :row_node="slot_node_0(opts.row.slots.header, {}, 'div')" :cols_binds="cols_binds"
-      :cols_nodes="cols_slots.map(col_slots => col_slots.header)" class="tavue-header-row">
-    </TavueRow>
+    <!-- Tavue table -->
+    <div class="tavue-rows tavue-table" :class="{ resizing: !!table_state.moving_border }" @mousedown="onMouseDown"
+      @mouseup="onMouseUp" @mousemove="onMouseMove" @dblclick="onDoubleClick">
 
-    <!-- row data (for each row in rows data) -->
-    <TavueTreeRows :rows="rows" :tprops="tprops" :depth="0"></TavueTreeRows>
+      <!-- row header -->
+      <TavueRow :row_node="slot_node_0(opts.row.slots.header, {}, 'div')" :cols_binds="cols_binds"
+        :cols_nodes="cols_slots.map(col_slots => col_slots.header)" class="tavue-header-row">
+      </TavueRow>
 
-    <!-- row footer -->
-    <TavueRow :row_node="slot_node_0(opts.row.slots.footer, {}, 'div')" :cols_binds="cols_binds"
-      :cols_nodes="cols_slots.map(col_slots => col_slots.footer)" class="tavue-footer-row">
-    </TavueRow>
+      <!-- row data (for each row in rows data) -->
+      <TavueTreeRows :rows="rows" :tprops="tprops" :depth="0"></TavueTreeRows>
+
+      <!-- row footer -->
+      <TavueRow :row_node="slot_node_0(opts.row.slots.footer, {}, 'div')" :cols_binds="cols_binds"
+        :cols_nodes="cols_slots.map(col_slots => col_slots.footer)" class="tavue-footer-row">
+      </TavueRow>
+
+    </div>
 
   </div>
 
