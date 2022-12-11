@@ -57,11 +57,15 @@ const opts: TableOptions = {
 
   <!-- Definition of Slots (for develpments only, not shown) -->
   <slot v-if="null" name="header_row"></slot>
-  <slot v-if="null" name="row" :row="(null as RowType)" :row_i="0" :is_open="false"></slot>
+  <slot v-if="null" name="row" :row="(null as RowType)" :row_i="0" :is_open="false" :set_open="(f: boolean) => { }">
+  </slot>
   <slot v-if="null" name="footer_row"></slot>
-  <slot v-if="null" name="tree_row" :row="(null as RowType)" :row_i="0"></slot>
-  <slot v-if="null" name="tree_parent_row" :row="(null as RowType)" :row_i="0"></slot>
-  <slot v-if="null" name="tree_child_row" :row="(null as RowType)" :row_i="0"></slot>
+  <slot v-if="null" name="tree_row" :row="(null as RowType)" :row_i="0" :is_open="false"
+    :set_open="(f: boolean) => { }"></slot>
+  <slot v-if="null" name="tree_parent_row" :row="(null as RowType)" :row_i="0" :is_open="false"
+    :set_open="(f: boolean) => { }"></slot>
+  <slot v-if="null" name="tree_child_row" :row="(null as RowType)" :row_i="0" :is_open="false"
+    :set_open="(f: boolean) => { }"></slot>
   <slot v-if="null" name="columns"></slot>
 
   <!-- Tavue table (actual element) -->
