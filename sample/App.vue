@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Tavue, TavueColumn } from '../src';
+import { Tavue, TavueColumn } from '..';
 import './app.css'
 
 import _rows from './assets/tree_sample.json';
