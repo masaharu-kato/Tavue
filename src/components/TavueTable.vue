@@ -98,7 +98,6 @@ function refreshColumnWidth(col_i: number) {
       cell.offsetParent !== null
         ? (cell.offsetWidth + (Number(cell.dataset.width_diff) || 0) + 1)
         : null)
-    console.log(widths)
     cols_state[col_i].enough_width = (widths.filter(w => w !== null) as number[]).reduce((a, b) => a > b ? a : b, 0)
     cols_state[col_i].width = cols_state[col_i].enough_width
     cols_state[col_i].user_width = undefined
