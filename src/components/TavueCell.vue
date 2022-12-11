@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ColumnBinds } from '../models/tavue';
-defineProps<{ col: ColumnBinds }>()
+const props = defineProps<{ col_binds: ColumnBinds }>()
+const { col_binds: col } = props;
 </script>
 
 <template>

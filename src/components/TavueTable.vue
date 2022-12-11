@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, Slots, useSlots, VNodeRef } from 'vue';
+import { nextTick, onMounted, reactive, ref, Slots, useSlots, VNodeRef } from 'vue';
 import { RowType, InternalTableProps, ColumnBinds, TableOptions, TableState, ColumnState, BorderState, slot_node_0 } from '../models/tavue';
 import TavueTreeRows from './TavueTreeRows.vue';
 import TavueRow from './TavueRow.vue';
@@ -33,10 +33,16 @@ const cols_binds = cols_i.map(i => ({
   border_R: borders_state[i + 1],
 } as ColumnBinds))
 
+function display_changed() {
+  nextTick(() => {
+    refreshAndJustifyColumnsWidth()
+  })
+}
+
 const { tree_children, children_opened, depth_offset } = opts.table
 
 //  Table properties for Rows
-const tprops = {
+const tprops: InternalTableProps = {
   table_state,
   cols_state,
   borders_state,
@@ -48,29 +54,23 @@ const tprops = {
   cols_slots,
   cols_binds,
   row_slots,
-} as InternalTableProps
+  display_changed,
+}
 
 onMounted(() => {
-  refreshColumnsEnoughWidth()
-  cols_i.map(col_i => {
-    justifyColumnWidth(col_i)
-  })
+  refreshAndJustifyColumnsWidth()
 })
 
 //  Table HTML Element
 const table_elm_ref = ref<HTMLElement>()
 
-function max(vals: number[], start: number): number {
-  return vals.reduce((a, b) => a > b ? a : b, start)
-}
-
-function getEnoughWidth(elm: HTMLElement) {
-  // return elm.offsetWidth > elm.scrollWidth ? elm.offsetWidth : elm.scrollWidth
-  return elm.offsetWidth + (Number(elm.dataset.width_diff) || 0)
+function getTableElement() {
+  if (!table_elm_ref.value) throw new Error('Table element is not set.')
+  return table_elm_ref.value
 }
 
 function getElement<ET extends Element>(elm: ET, query: string) {
-  const res_elm = elm.querySelector(query)
+  const res_elm = elm.querySelector(query) as ET | null
   return res_elm
 }
 
@@ -81,19 +81,28 @@ function getElements<ET extends Element>(elm: ET, query: string) {
 }
 
 //  Refresh enough width values of columns
-function refreshColumnsEnoughWidth() {
-  if (!table_elm_ref.value) throw new Error('Table element is not set.')
-  const table_elm = table_elm_ref.value
+function refreshColumnWidth(col_i: number) {
+  cols_state[col_i].width = undefined;
+  const table_elm = getTableElement();
   const rows = getElements(table_elm, '.tavue-row')
-  cols_i.map(col_i => {
-    const col_cells = rows.map(row => getElement(row, `[data-col_i="${col_i}"]`)).filter(elm => elm) as HTMLElement[]
-    const max_width = max(col_cells.map(cell => getEnoughWidth(cell)), 0)
-    cols_state[col_i].enough_width = max_width + 1;
+  const cells = rows.map(row => getElement(row, `.tavue-cell[data-col_i="${col_i}"]`)).filter(elm => elm) as HTMLElement[]
+  nextTick(() => {
+    const widths = cells.map(cell =>
+      cell.offsetParent !== null
+        ? (cell.offsetWidth + (Number(cell.dataset.width_diff) || 0) + 1)
+        : null)
+    console.log(widths)
+    cols_state[col_i].enough_width = (widths.filter(w => w !== null) as number[]).reduce((a, b) => a > b ? a : b, 0)
+    cols_state[col_i].width = cols_state[col_i].enough_width
+    cols_state[col_i].user_width = undefined
   })
 }
 
-function justifyColumnWidth(col_i: number) {
-  cols_state[col_i].width = cols_state[col_i].enough_width;
+function refreshAndJustifyColumnsWidth() {
+  cols_i.map(col_i => {
+    const state = cols_state[col_i]
+    if (!state.user_width) refreshColumnWidth(col_i)
+  })
 }
 
 //  Get a target column on the current cursor location
@@ -141,16 +150,20 @@ function onMouseDown(e: MouseEvent) {
   }
 }
 
-function onMousemove(e: MouseEvent) {
+function onMouseMove(e: MouseEvent) {
+
   //  Process column border movements
   if (table_state.moving_border != undefined) {
     const i_border = table_state.moving_border;
     if (i_border > 0 && table_state.moving_last_x) {
-      cols_state[i_border - 1].width! += (e.screenX - table_state.moving_last_x);
+      const state = cols_state[i_border - 1];
+      state.width! += (e.screenX - table_state.moving_last_x);
+      state.user_width = state.width;
     }
     table_state.moving_last_x = e.screenX
     return
   }
+
   //  Get the current hovering column
   const t_col_i = getTargetColumn(e)
   if (t_col_i != undefined) {
@@ -179,7 +192,7 @@ function onDoubleClick(e: MouseEvent) {
   //  justify the column width on the left of the border.
   if (table_state.hovering_border) {
     const col_i = table_state.hovering_border - 1
-    justifyColumnWidth(col_i)
+    refreshColumnWidth(col_i)
   }
 }
 
@@ -188,7 +201,7 @@ function onDoubleClick(e: MouseEvent) {
 
   <!-- Tavue table -->
   <div ref="table_elm_ref" class="tavue-rows tavue-table" :class="{ resizing: !!table_state.moving_border }"
-    @mousedown="onMouseDown" @mouseup="onMouseUp" @mousemove="onMousemove" @dblclick="onDoubleClick">
+    @mousedown="onMouseDown" @mouseup="onMouseUp" @mousemove="onMouseMove" @dblclick="onDoubleClick">
 
     <!-- row header -->
     <TavueRow :row_node="slot_node_0(opts.row.slots.header, {}, 'div')" :cols_binds="cols_binds"

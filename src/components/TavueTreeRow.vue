@@ -25,7 +25,7 @@ const tree_child_row_node = slot_node_0(tp.row_slots.tree_child, { row, row_i },
 
 //  Tree table: Children open (visibility) state
 const is_open = props.child_rows ? ref(!!tp.children_opened) : undefined;
-const set_open = is_open !== undefined ? (f: boolean) => { is_open.value = f } : (f: boolean) => { };
+const set_open = is_open !== undefined ? (f: boolean) => { is_open.value = f; tp.display_changed(); } : (f: boolean) => { };
 
 //  Tree table: Width diffs (for the left-most column)
 const col0_wdiff = tp.depth_offset ? tp.depth_offset(props.depth) : 0
@@ -34,7 +34,7 @@ const col0_wdiff = tp.depth_offset ? tp.depth_offset(props.depth) : 0
 //  Column bindings
 const cols_binds = tp.cols_binds.map((col_binds, i) => ({
   ...col_binds,
-  width_diff: i == 0 ? col0_wdiff : 0,
+  width_diff: i == 0 ? col0_wdiff : undefined,
   // is_open,
   // set_open,
 } as ColumnBinds))

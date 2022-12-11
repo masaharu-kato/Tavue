@@ -11,6 +11,7 @@ export interface TableState {
 
 export interface ColumnState {
   width?: number
+  user_width?: number
   enough_width?: number
   hover?: boolean
 }
@@ -73,6 +74,7 @@ export interface InternalTableProps extends TableProps {
   cols_slots: ColumnSlots[]
   cols_binds: ColumnBinds[]
   row_slots: RowSlots
+  display_changed: () => void,
 }
 
 export interface ColumnProps {
