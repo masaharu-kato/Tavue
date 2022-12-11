@@ -6,7 +6,13 @@
   margin-left: 8px;
   border-left: 4px solid #888888;
   margin-bottom: 4px;
-  /* border-bottom: 4px solid #DDDDDD; */
+}
+
+.tavue-tree-row .tree-btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  text-align: center;
 }
 
 .tavue-tree-row.tree-row-A.tavue-tree-row-opened>.tavue-tree-row-parent {
