@@ -6,7 +6,8 @@ export interface TableState {
   hovering_col_i?: number
   hovering_border?: number
   moving_border?: number
-  moving_last_x?: number
+  moving_init_width?: number
+  moving_init_x?: number
 }
 
 export interface ColumnState {
@@ -78,6 +79,8 @@ export interface InternalTableProps extends TableProps {
 }
 
 export interface ColumnOptions {
+  min_width?: number, //  Minimum width
+  max_width?: number, //  Maximum width
   resizeable?: boolean,  //  Is resizeable or not
   // sortable?: boolean,    //  Is sortable or not
   // filtable?: boolean,    //  Is filtable or not

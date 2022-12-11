@@ -143,9 +143,18 @@ function startBorderMove(i: number, e: MouseEvent) {
     if (border.hover && !border.moving && !table_state.moving_border) {
       border.moving = true
       table_state.moving_border = i;
-      table_state.moving_last_x = e.screenX;
+      table_state.moving_init_x = e.screenX;
+      table_state.moving_init_width = cols_state[i - 1].width;
     }
   }
+}
+
+function setColumnWidth(col_i: number, width: number) {
+  const cs = cols_state[col_i]
+  const cp = cols_props[col_i]
+  width = cp.min_width !== undefined && cp.min_width > width ? cp.min_width : width
+  width = cp.max_width !== undefined && cp.max_width < width ? cp.max_width : width
+  cs.width = width;
 }
 
 function onMouseDown(e: MouseEvent) {
@@ -161,13 +170,13 @@ function onMouseMove(e: MouseEvent) {
   //  Process column border movements
   if (table_state.moving_border != undefined) {
     const i_border = table_state.moving_border;
-    if (i_border > 0 && table_state.moving_last_x) {
-      const state = cols_state[i_border - 1];
-      state.width! += (e.screenX - table_state.moving_last_x);
+    if (i_border > 0 && table_state.moving_init_x && table_state.moving_init_width) {
+      const col_i = i_border - 1;
+      const state = cols_state[col_i];
+      if (state.width === undefined) throw new Error('Width is not set.')
+      setColumnWidth(col_i, table_state.moving_init_width + (e.screenX - table_state.moving_init_x));
       state.user_width = state.width;
     }
-    table_state.moving_last_x = e.screenX
-    return
   }
 
   //  Get the current hovering column
@@ -189,7 +198,8 @@ function onMouseUp(e: MouseEvent) {
     const border = borders_state[table_state.moving_border];
     border.moving = false;
     table_state.moving_border = undefined;
-    table_state.moving_last_x = undefined;
+    table_state.moving_init_x = undefined;
+    table_state.moving_init_width = undefined;
   }
 }
 

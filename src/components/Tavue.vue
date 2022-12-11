@@ -5,7 +5,7 @@ import TavueTable from './TavueTable.vue';
 
 const props = defineProps<{
   rows: RowType[]   //  Rows data
-  column: ColumnOptions   //  Column options default values
+  column?: ColumnOptions   //  Column options default values
   tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
@@ -39,7 +39,9 @@ const opts: TableOptions = {
     if (!col_props.name) throw new Error('Column name is not set.')
 
     //  Set default prop values
-    col_props.resizeable = col_props.resizeable ?? props.column.resizeable;
+    col_props.min_width = col_props.min_width ?? props.column?.min_width ?? 1;
+    col_props.max_width = col_props.max_width ?? props.column?.max_width ?? undefined;
+    col_props.resizeable = col_props.resizeable ?? props.column?.resizeable ?? undefined;
 
     //  Load column slots
     if (!(c.children instanceof Object) || c.children instanceof Array) {
