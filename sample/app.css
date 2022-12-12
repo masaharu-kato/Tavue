@@ -1,48 +1,54 @@
-.tavue-row-tree.tavue-row-tree-is-open>.tavue-row-tree-parent {
+.tavue-tree-row.tavue-tree-row-opened>.tavue-tree-row-parent {
   background: #DDDDDD;
 }
 
-.tavue-row-tree>.tavue-row-tree-children {
+.tavue-tree-row>.tavue-tree-row-children {
   margin-left: 8px;
   border-left: 4px solid #888888;
   margin-bottom: 4px;
-  /* border-bottom: 4px solid #DDDDDD; */
 }
 
-.tavue-row-tree.row-tree-A.tavue-row-tree-is-open>.tavue-row-tree-parent {
+.tavue-tree-row .tree-btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  text-align: center;
+}
+
+.tavue-tree-row.tree-row-A.tavue-tree-row-opened>.tavue-tree-row-parent {
   background: #BBCCDD;
 }
 
-.tavue-row-tree.row-tree-A>.tavue-row-tree-children {
+.tavue-tree-row.tree-row-A>.tavue-tree-row-children {
   border-left: 4px solid #446688;
   /* border-bottom: 2px solid #446688; */
 }
 
-.tavue-row-tree.row-tree-A>.tavue-row-tree-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
+.tavue-tree-row.tree-row-A>.tavue-tree-row-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
   background: #BBCCDD;
   /* border-bottom: 2px solid #446688; */
 }
 
-.tavue-row-tree.row-tree-A .tree-btn {
+.tavue-tree-row.tree-row-A .tree-btn {
   background: #88AACC;
   border: 1px solid #446688;
 }
 
-.tavue-row-tree.row-tree-B.tavue-row-tree-is-open>.tavue-row-tree-parent {
+.tavue-tree-row.tree-row-B.tavue-tree-row-opened>.tavue-tree-row-parent {
   background: #BBDDCC;
 }
 
-.tavue-row-tree.row-tree-B>.tavue-row-tree-children {
+.tavue-tree-row.tree-row-B>.tavue-tree-row-children {
   border-left: 4px solid #448866;
   /* border-bottom: 2px solid #448866; */
 }
 
-.tavue-row-tree.row-tree-B>.tavue-row-tree-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
+.tavue-tree-row.tree-row-B>.tavue-tree-row-children>.tavue-row>.tavue-cell[data-col_name="tree"] {
   background: #BBDDCC;
   /* border-bottom: 2px solid #446688; */
 }
 
-.tavue-row-tree.row-tree-B .tree-btn {
+.tavue-tree-row.tree-row-B .tree-btn {
   background: #88CCAA;
   border: 1px solid #448866;
   /* border-bottom: 2px solid #446688; */
@@ -64,15 +70,19 @@
   padding: 0.1em 0.5em;
 }
 
+.tavue-cell:last-of-type {
+  border-right: 1px solid #E0E0E0;
+}
+
 .tavue-cell[data-col_name="tree"] {
   padding: 0;
 }
 
-.tavue-row-header {
+.tavue-header-row {
   background-color: #CCCCCC;
 }
 
-.tavue-row-data:hover {
+.tavue-data-row:hover {
   background-color: #F8FFFF;
 }
 
@@ -80,7 +90,7 @@
   background-color: #F8FFFF;
 } */
 
-.tavue-table:not(.resizing) .tavue-row-header .tavue-cell.hover {
+.tavue-table:not(.resizing) .tavue-header-row .tavue-cell.hover {
   background-color: #DDE8E8;
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Tavue, TavueColumn } from '../src';
+import { Tavue, TavueColumn } from '..';
 import './app.css'
 
 import _rows from './assets/tree_sample.json';
@@ -24,14 +24,14 @@ function row_onclick(row: any, row_i: number) {
     <!-- <template #row_footer>
       <div></div>
     </template> -->
-    <template #row_tree="{ row, row_i }">
-      <div :class="{ 'row-tree-A': !!row.child_A, 'row-tree-B': !!row.child_B }"></div>
+    <template #tree_row="{ row }">
+      <div :class="{ 'tree-row-A': !!row.child_A, 'tree-row-B': !!row.child_B }"></div>
     </template>
     <template #columns>
       <TavueColumn name="tree">
         <template #header></template>
         <template #row="{ is_open, set_open }">
-          <template v-if="(is_open != undefined && set_open != undefined)">
+          <template v-if="(is_open != undefined)">
             <button class="tree-btn" @click="set_open(!is_open)">
               <span v-if="is_open" class="tree_txt_close">－</span>
               <span v-else class="tree_txt_open">＋</span>
@@ -45,7 +45,7 @@ function row_onclick(row: any, row_i: number) {
         <template #row="{ row }">{{ row.id }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="name">
+      <TavueColumn name="name" :resizeable="true">
         <template #header>Name</template>
         <template #row="{ row }">
           <span class="first_name">{{ row.first_name }}</span>
@@ -54,17 +54,17 @@ function row_onclick(row: any, row_i: number) {
         </template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="gender">
+      <TavueColumn name="gender" :width="80" :resizeable="true">
         <template #header>Gender</template>
         <template #row="{ row }">{{ row.gender }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="email">
+      <TavueColumn name="email" :resizeable="true">
         <template #header>E-Mail</template>
         <template #row="{ row }">{{ row.email }}</template>
         <template #footer></template>
       </TavueColumn>
-      <TavueColumn name="ip_address">
+      <TavueColumn name="ip_address" :resizeable="true">
         <template #header>IP Address</template>
         <template #row="{ row }">{{ row.ip_address }}</template>
         <template #footer></template>

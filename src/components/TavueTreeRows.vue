@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RowType, InternalTableProps } from '../models/tavue'
-import TavueRow from './_TavueRow.vue';
+import TavueTreeRow from './TavueTreeRow.vue';
 
 const props = defineProps<{
   rows: RowType[],
@@ -18,6 +18,6 @@ function _children(row: RowType, row_i: number) {
 </script>
 <template>
   <template v-for="(row, row_i) in rows">
-    <TavueRow v-bind="{ row, row_i, tprops, depth, child_rows: _children(row, row_i) }"></TavueRow>
+    <TavueTreeRow v-bind="{ row, row_i, tprops, depth, child_rows: _children(row, row_i) }"></TavueTreeRow>
   </template>
 </template>

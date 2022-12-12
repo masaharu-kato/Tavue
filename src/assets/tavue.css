@@ -1,3 +1,14 @@
+.tavue-table-wrapper {
+  display: block;
+  overflow: auto;
+  max-width:max-content;
+  max-height: 90vh;
+}
+
+.tavue-table {
+  width: fit-content;
+}
+
 .tavue-rows {
   display: flex;
   flex-direction: column;
@@ -9,17 +20,17 @@
   flex: 0 0 auto;
 }
 
-.tavue-row.tavue-row-tree {
+.tavue-row.tavue-tree-row {
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
 }
 
-.tavue-row-tree>.tavue-row-tree-children {
+.tavue-tree-row>.tavue-tree-row-children {
   display: none;
 }
 
-.tavue-row-tree.tavue-row-tree-is-open>.tavue-row-tree-children {
+.tavue-tree-row.tavue-tree-row-opened>.tavue-tree-row-children {
   display: flex;
 }
 
