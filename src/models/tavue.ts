@@ -31,6 +31,12 @@ export interface RowStateSetter {
 
 export interface RowState extends RowStateValues, RowStateSetter {}
 
+export interface RowColumnStateValues extends RowStateValues {}
+
+export interface RowColumnStateSetter extends RowStateSetter {}
+
+export interface RowColumnState extends RowColumnStateValues, RowColumnStateSetter {}
+
 export interface RowSlotProps<RowType> {
   row: RowType,
   row_i: number,

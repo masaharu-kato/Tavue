@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VNode } from 'vue';
-import { ColumnBinds, ColumnSlots, RowState } from '../models/tavue';
+import { ColumnBinds, ColumnSlots, RowColumnState } from '../models/tavue';
 import TavueRow from './TavueRow.vue';
 
 const props = defineProps<{
@@ -9,7 +9,7 @@ const props = defineProps<{
   cols_slots: ColumnSlots<unknown>[],
   row: unknown,
   row_i: number,
-  state: RowState,
+  state: RowColumnState,
 }>()
 
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { InternalTableProps, ColumnBinds, slot_node_0, RowState } from '../models/tavue'
+import { InternalTableProps, ColumnBinds, slot_node_0 } from '../models/tavue'
 import TavueTreeRows from './TavueTreeRows.vue';
 import TavueDataRow from './TavueDataRow.vue';
 
