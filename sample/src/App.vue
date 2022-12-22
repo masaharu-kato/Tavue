@@ -1,10 +1,23 @@
 <script setup lang="ts">
-import { Tavue, TavueColumn } from 'tavue';
+import { useTavue } from 'tavue';
 import './app.css'
-
 import _rows from './assets/tree_sample.json';
+
+interface Data {
+  id: string
+  first_name: string
+  last_name: string
+  gender: string
+  email: string
+  ip_address: string
+  child_A?: Data[]
+  child_B?: Data[]
+}
+
 // const rows = _rows.slice(0, 100);
-const rows = _rows;
+const rows = _rows as unknown as Data[];
+
+const { Tavue, TavueColumn } = useTavue<Data>();
 
 function row_onclick(row: any, row_i: number) {
   console.log(`Row#${row_i} clicked:`, row);

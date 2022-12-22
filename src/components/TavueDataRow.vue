@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { VNode } from 'vue';
-import { ColumnBinds, ColumnSlots, RowType } from '../models/tavue';
+import { ColumnBinds, ColumnSlots } from '../models/tavue';
 import TavueRow from './TavueRow.vue';
 
 const props = defineProps<{
   row_node: VNode,
   cols_binds: ColumnBinds[],
-  cols_slots: ColumnSlots[],
-  row: RowType,
+  cols_slots: ColumnSlots<unknown>[],
+  row: unknown,
   row_i: number,
   is_open?: boolean,
   set_open: (f: boolean) => void,

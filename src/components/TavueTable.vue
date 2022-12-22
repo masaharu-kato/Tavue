@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, reactive, ref, Slots, useSlots, VNodeRef } from 'vue';
-import { RowType, InternalTableProps, ColumnBinds, TableOptions, TableState, ColumnState, BorderState, slot_node_0 } from '../models/tavue';
+import { InternalTableProps, ColumnBinds, TableOptions, TableState, ColumnState, BorderState, slot_node_0 } from '../models/tavue';
 import TavueTreeRows from './TavueTreeRows.vue';
 import TavueRow from './TavueRow.vue';
 
@@ -8,8 +8,8 @@ import TavueRow from './TavueRow.vue';
 const DETECT_WIDTH = 5;
 
 const props = defineProps<{
-  rows: RowType[]
-  opts: TableOptions
+  rows: unknown[]
+  opts: TableOptions<unknown>
 }>()
 
 const { opts } = props;
@@ -49,7 +49,7 @@ function display_changed() {
 const { tree_children, children_opened, depth_offset } = opts.table
 
 //  Table properties for Rows
-const tprops: InternalTableProps = {
+const tprops: InternalTableProps<unknown> = {
   table_state,
   cols_state,
   borders_state,
