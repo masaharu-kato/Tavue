@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { reactive, Slots, useSlots } from 'vue';
-import { RowType, slot_nodes, ColumnProps, ColumnOptions, TableOptions } from '../models/tavue';
+import { Slots, useSlots } from 'vue';
+import { slot_nodes, ColumnProps, ColumnOptions, TableOptions } from '../models/tavue';
 import TavueTable from './TavueTable.vue';
 
 const props = defineProps<{
-  rows: RowType[]   //  Rows data
+  rows: any[]   //  Rows data
+  tree_children?: (row: any, row_i: number) => (typeof row)[] | undefined
   column?: ColumnOptions   //  Column options default values
-  tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
 }>()
@@ -16,7 +16,7 @@ const slots = useSlots()
 //  Columns
 if (!slots.columns) throw new Error('Slot `columns` not specified.')
 
-const opts: TableOptions = {
+const opts: TableOptions<unknown> = {
   table: {
     tree_children: props.tree_children,
     depth_offset: props.depth_offset,
@@ -61,22 +61,7 @@ const opts: TableOptions = {
 }
 
 </script>
+
 <template>
-
-  <!-- Definition of Slots (for develpments only, not shown) -->
-  <slot v-if="null" name="header_row"></slot>
-  <slot v-if="null" name="row" :row="(null as RowType)" :row_i="0" :is_open="false" :set_open="(f: boolean) => { }">
-  </slot>
-  <slot v-if="null" name="footer_row"></slot>
-  <slot v-if="null" name="tree_row" :row="(null as RowType)" :row_i="0" :is_open="false"
-    :set_open="(f: boolean) => { }"></slot>
-  <slot v-if="null" name="tree_parent_row" :row="(null as RowType)" :row_i="0" :is_open="false"
-    :set_open="(f: boolean) => { }"></slot>
-  <slot v-if="null" name="tree_child_row" :row="(null as RowType)" :row_i="0" :is_open="false"
-    :set_open="(f: boolean) => { }"></slot>
-  <slot v-if="null" name="columns"></slot>
-
-  <!-- Tavue table (actual element) -->
   <TavueTable :rows="rows" :opts="opts"></TavueTable>
-
 </template>

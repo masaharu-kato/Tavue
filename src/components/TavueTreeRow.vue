@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { RowType, InternalTableProps, ColumnBinds, slot_node_0 } from '../models/tavue'
+import { ref } from 'vue';
+import { InternalTableProps, ColumnBinds, slot_node_0 } from '../models/tavue'
 import TavueTreeRows from './TavueTreeRows.vue';
 import TavueDataRow from './TavueDataRow.vue';
 
 const props = defineProps<{
-  row: RowType,
+  row: unknown,
   row_i: number,
   depth: number,
-  child_rows?: RowType[],
-  tprops: InternalTableProps,
+  child_rows?: unknown[],
+  tprops: InternalTableProps<unknown>,
 }>()
 
 //  Extract variables

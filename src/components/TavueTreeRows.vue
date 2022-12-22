@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { RowType, InternalTableProps } from '../models/tavue'
+import { InternalTableProps } from '../models/tavue'
 import TavueTreeRow from './TavueTreeRow.vue';
 
 const props = defineProps<{
-  rows: RowType[],
-  tprops: InternalTableProps,
+  rows: unknown[],
+  tprops: InternalTableProps<unknown>,
   depth: number,
 }>()
 
 const rp = props.tprops
 
-function _children(row: RowType, row_i: number) {
+function _children(row: unknown, row_i: number) {
   if (!rp.tree_children) return undefined
   return rp.tree_children(row, row_i)
 }

@@ -1,7 +1,5 @@
 import { Slot, VNode } from "vue"
 
-export type RowType = any
-
 export interface TableState {
   hovering_col_i?: number
   hovering_border?: number
@@ -23,16 +21,16 @@ export interface BorderState {
   moving_last_x?: number
 }
 
-export interface RowSlotProps {
+export interface RowSlotProps<RowType> {
   row: RowType,
   row_i: number,
   is_open?: boolean,
   set_open: (f: boolean) => void,
 }
 
-export interface ColumnSlots {
+export interface ColumnSlots<RowType> {
   header: VNode[],
-  row: (props: RowSlotProps) => VNode[],
+  row: (props: RowSlotProps<RowType>) => VNode[],
   footer: VNode[],
 }
 
@@ -60,19 +58,19 @@ export interface RowSlots {
   tree_child?: Slot
 }
 
-export type TableProps = {
+export type TableProps<RowType> = {
   tree_children?: (row: RowType, row_i: number) => RowType[] | undefined
   children_opened?: boolean
   depth_offset?: (depth: number) => number
 }
 
-export interface InternalTableProps extends TableProps {
+export interface InternalTableProps<RowType> extends TableProps<RowType> {
   table_state: TableState,
   cols_state: ColumnState[],
   borders_state: BorderState[],
   cols_i: number[]
   cols_props: ColumnProps[]
-  cols_slots: ColumnSlots[]
+  cols_slots: ColumnSlots<RowType>[]
   cols_binds: ColumnBinds[]
   row_slots: RowSlots
   display_changed: () => void,
@@ -93,14 +91,14 @@ export interface ColumnProps extends ColumnOptions {
   width?: number,        //  Initial width 
 }
 
-export interface TableOptions {
-  table: TableProps
+export interface TableOptions<RowType> {
+  table: TableProps<RowType>
   row: {
     slots: RowSlots
   }
   cols: {
     props: ColumnProps
-    slots: ColumnSlots
+    slots: ColumnSlots<RowType>
   }[]
 }
 
