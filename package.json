@@ -4,9 +4,9 @@
   "description": "Scalable Table Module for Vue.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "dev": "cd sample; vite",
+    "build": "cd sample; vue-tsc && vite build",
+    "preview": "cd sample; vite preview"
   },
   "main": "src",
   "files": [
