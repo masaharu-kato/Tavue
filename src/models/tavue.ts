@@ -21,11 +21,26 @@ export interface BorderState {
   moving_last_x?: number
 }
 
+export interface RowStateValues {
+  is_open?: boolean,
+}
+
+export interface RowStateSetter {
+  set_open?: (f: boolean) => void,
+}
+
+export interface RowState extends RowStateValues, RowStateSetter {}
+
+export interface RowColumnStateValues extends RowStateValues {}
+
+export interface RowColumnStateSetter extends RowStateSetter {}
+
+export interface RowColumnState extends RowColumnStateValues, RowColumnStateSetter {}
+
 export interface RowSlotProps<RowType> {
   row: RowType,
   row_i: number,
-  is_open?: boolean,
-  set_open: (f: boolean) => void,
+  state: RowState,
 }
 
 export interface ColumnSlots<RowType> {
@@ -45,8 +60,7 @@ export interface ColumnBindsOnTable {
 
 export interface ColumnBinds extends ColumnBindsOnTable {
   width_diff?: number,  //  Width difference from standard (for tree table)
-  // is_open?: boolean,    //  (Tree table) Child table is open (visible) or not
-  // set_open: (f: boolean) => void,  //  (Tree table) Set child table open state
+  // state: RowState,
 }
 
 export interface RowSlots {

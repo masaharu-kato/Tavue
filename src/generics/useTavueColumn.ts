@@ -1,6 +1,7 @@
 import { defineComponent, h, VNode } from 'vue';
 import { ExtractComponentProps } from './types';
 import TavueColumnComponent from '../components/TavueColumn.vue';
+import { RowColumnState } from '../models/tavue';
 
 interface TavueColumnProps<RowType> extends ExtractComponentProps<typeof TavueColumnComponent> {
 }
@@ -8,8 +9,7 @@ interface TavueColumnProps<RowType> extends ExtractComponentProps<typeof TavueCo
 interface TavueColumnSlotProps<RowType> {
   row: RowType
   row_i: number
-  is_open: boolean
-  set_open: (f: boolean) => void
+  state: RowColumnState
 }
 
 export function useTavueColumnComponent<RowType = unknown>() {
