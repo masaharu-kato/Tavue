@@ -1,7 +1,7 @@
 {
   "name": "tavue",
-  "private": false,
   "version": "0.1.0",
+  "description": "Scalable Table Module for Vue.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,23 @@
     "preview": "vite preview"
   },
   "main": "src",
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masaharu-kato/Tavue.git"
+  },
+  "keywords": [
+    "table",
+    "vue"
+  ],
+  "author": "Masaharu Kato",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/masaharu-kato/Tavue/issues"
+  },
+  "homepage": "https://github.com/masaharu-kato/Tavue#readme",
   "dependencies": {
     "vue": "^3.2.41"
   },
